@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="records">
+    <resultMap id="userId" type="com.thoughtworks.ketsu.domain.user.UserId">
+        <constructor>
+            <idArg column="userId" javaType="string"/>
+        </constructor>
+    </resultMap>
+
+    <resultMap id="user" type="com.thoughtworks.ketsu.domain.user.User">
+        <result property="name" column="userName"/>
+        <result property="email" column="userEmail"/>
+        <result property="role" column="userRole"/>
+        <result property="password" column="userPassword"/>
+        <association property="userId" resultMap="userId"/>
+    </resultMap>
+
+    <resultMap id="container" type="com.thoughtworks.ketsu.domain.container.Container">
+        <result property="container_id" column="container_id"/>
+        <result property="id" column="id"/>
+    </resultMap>
+
+    <resultMap id="warehouse" type="com.thoughtworks.ketsu.domain.warehouse.Warehouse">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="containers" column="containers"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.thoughtworks.ketsu.infrastructure.mybatis.mappers.ContainerMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="container.container_id" keyColumn="container_id">
+        INSERT INTO containers (id) VALUES (#{container.id});
+    </insert>
+
+    <select id="all" resultType="com.thoughtworks.ketsu.domain.container.Container">
+        SELECT container_id, id from containers
+    </select>
+
+    <select id="ofId" resultMap="records.container">
+        SELECT container_id, id FROM containers C
+        WHERE C.container_id = #{container_id}
+    </select>
+
+    <update id="update">
+        update containers set id=#{info.id}
+        where container_id=#{container.container_id}
+    </update>
+
+    <delete id="delete">
+        delete from containers where id=#{container.id}
+    </delete>
+</mapper>

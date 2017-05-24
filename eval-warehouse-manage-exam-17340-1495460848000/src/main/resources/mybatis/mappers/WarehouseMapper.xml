@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.thoughtworks.ketsu.infrastructure.mybatis.mappers.WarehouseMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="warehouse.id" keyColumn="id">
+        INSERT INTO warehouses (name) VALUES (#{warehouse.name});
+    </insert>
+
+    <select id="all" resultType="com.thoughtworks.ketsu.domain.warehouse.Warehouse">
+        SELECT id, name from warehouses
+    </select>
+
+    <select id="ofId" resultMap="records.warehouse">
+        SELECT
+        <include refid="columns.warehouse"/>
+        FROM warehouses W
+        WHERE W.id = #{id}
+    </select>
+
+    <update id="update">
+        update warehouses
+        set name=#{info.name},
+        containers=#{info.containers}
+        where id=#{warehouse.id}
+    </update>
+
+    <delete id="delete">
+        delete from warehouses where id=#{warehouse.id}
+    </delete>
+</mapper>

@@ -1,0 +1,5 @@
+export DB_PORT=3306
+export DB_DATABASE=supermarket
+export DB_USERNAME=mysql
+export DB_PASSWORD=mysql
+

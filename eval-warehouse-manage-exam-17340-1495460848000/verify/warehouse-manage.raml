@@ -1,0 +1,295 @@
+#%RAML 0.8
+title: supermarket-warehouse-manage-api
+mediaType: application/json
+
+/warehouse:
+  get:
+    description: As a admin, I can get all warehouses so that I can manage them.
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "totalCount": {
+                  "type": "integer"
+                },
+                "providers": {
+                  "type": "array",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                     },
+                     "containers": {
+                       "type": "array",
+                       "container": {
+                         "type": "integer"
+                       }
+                     },
+                     "required": ["id", "name"]
+                  }
+
+                }
+              }
+            example: |
+              {
+                "totalCount": 2,
+                [{
+                  "id": 1,
+                  "name": "Apple House",
+                  "containers": [1, 2, 4]
+                 }, {
+                  "id": 2,
+                  "name": "Cookie House"
+                }]
+              }
+
+  post:
+    description: As a admin, I can create a warehouse so that I can improve storage capacity.
+    body:
+      application/json:
+        schema: |
+           {
+             "$schema": "http://json-schema.org/draft-04/schema#",
+             "type": "object",
+             "properties": {
+               "name": {
+                "type": "string",
+                "required": true
+               }
+             }
+           }
+        example: |
+          {
+            "name": "Yellow Duck House"
+          }
+
+    responses:
+        201:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "warehouse_url": {
+                      "type": "string",
+                      "required": true
+                    }
+                  }
+                }
+              example: |
+                {
+                  "warehouse_url": "warehouses/3"
+                }
+
+  /{id}:
+    get:
+      description: As a admin, I can get an warehouse so that I can view its details.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                     },
+                     "containers": {
+                       "type": "array",
+                       "container": {
+                         "type": "integer"
+                       }
+                     },
+                     "required": ["id", "name"]
+                  }
+                }
+              example: |
+                {
+                  "name": "Super Apple",
+                  "containers": [1, 2, 4]
+                }
+
+    put:
+      description: As a admin, I can update a warehouse's detail so that I can save containers into it.
+      body:
+        application/json:
+          schema: |
+           {
+             "$schema": "http://json-schema.org/draft-04/schema#",
+             "type": "object",
+             "properties": {
+               "id": {
+                "type": "string",
+                "required": true
+               },
+               "name": {
+                "type": "string",
+                "required": true
+               },
+              "containers": {
+                "type": "array",
+                "container": {
+                  "type": "integer"
+                },
+                "required": true
+              }
+             }
+           }
+          example: |
+            {
+              "id": 1,
+              "name": "Little Yellow Duck",
+              "containers": [5, 7]
+            }
+      responses:
+        204:
+
+
+    delete:
+      description: As a admin, I can delete a provider when I won't to buy products from it.
+      responses:
+        204:
+
+/containers:
+  get:
+    description: As a admin, I can get all containers so that I can manage them.
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "required": true,
+                "totalCount": {
+                  "type": "integer"
+                },
+                "containers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "required": true
+                      }
+                    }
+                  }
+                }
+              }
+            example: |
+              {
+                "totalCount": 2,
+                "containers": [
+                  {
+                    "id": 1
+                  },
+                  {
+                    "id": 2
+                  }
+                ]
+              }
+
+  post:
+    description: As a admin, I can create a container so that I can improve transportion capacity.
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "required": true
+              }
+            }
+          }
+        example: |
+          {
+            "id": 4
+          }
+    responses:
+      201:
+        body:
+          application/json:
+           schema: |
+             {
+               "$schema": "http://json-schema.org/draft-04/schema#",
+               "type": "object",
+               "properties": {
+                 "container_url": {
+                   "type": "string",
+                   "required": true
+                 }
+               }
+             }
+           example: |
+             {
+               "container_url": "containers/4"
+             }
+
+  /{id}:
+    get:
+      description: As a admin, I can get a container so that I can view its details.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "required": true
+                    }
+                  }
+                }
+              example: |
+                {
+                  "id": 5
+                }
+    delete:
+      description: As a admin, I can delete a container when I want to reduce transportation capacity.
+      responses:
+        204:
+          description: delete successfully
+
+    put:
+      description: As a admin, I can update a container when this container detail has changed.
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+                "properties": {
+                 "id": {
+                   "type": "integer",
+                   "required": true
+                 }
+               }
+             }
+          example: |
+            {
+              "id": 5
+             }
+      responses:
+        204:
+

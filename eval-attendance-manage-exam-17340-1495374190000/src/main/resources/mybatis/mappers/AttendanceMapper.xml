@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.thoughtworks.ketsu.infrastructure.mybatis.mappers.AttendanceMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="attendance.id" keyColumn="id">
+        INSERT INTO attendances (employee_id, description, from_date, to_date, present)
+        VALUES (#{attendance.employee_id},#{attendance.description},#{attendance.from_date},#{attendance.to_date},#{attendance.present});
+    </insert>
+
+    <select id="all" resultType="com.thoughtworks.ketsu.domain.attendance.Attendance">
+        SELECT id, employee_id, description, from_date, to_date, present from attendances
+    </select>
+
+    <select id="ofId" resultMap="records.attendance">
+        SELECT
+        <include refid="columns.attendance"/>
+        FROM attendances A
+        WHERE A.id = #{id}
+    </select>
+
+    <update id="update">
+        update attendances
+        set employee_id=#{info.employee_id},
+        description=#{info.description},
+        from_date=#{info.from_date},
+        to_date=#{info.to_date},
+        present=#{info.present}
+        where id=#{attendance.id}
+    </update>
+
+    <delete id="delete">
+        delete from attendances where id=#{attendance.id}
+    </delete>
+</mapper>

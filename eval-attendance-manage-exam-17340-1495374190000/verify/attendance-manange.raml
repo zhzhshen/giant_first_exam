@@ -1,0 +1,381 @@
+#%RAML 0.8
+title: supermarket-attendance-manage-api
+mediaType: application/json
+
+/attendances:
+  get:
+    description: As an admin I can get all attendance information so that I can manage them.
+    queryParameters:
+      employee_id:
+        description: "The id of the employee used to filter the employee list"
+        example: "1"
+        type: integer
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "attendances": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "employee_id": {
+                      "type": "integer"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "present": {
+                      "type": "boolean"
+                    },
+                    "from_date": {
+                      "type": "string"
+                    },
+                    "to_date": {
+                      "type": "string"
+                    },
+                    "required": ["employee_id", "description", "id", "present", "from_date", "to_date"]
+                  }
+                }
+              }
+            example: |
+              [
+                {
+                  "id": 1,
+                  "employee_id": 1,
+                  "description": "sick leave",
+                  "from_date": "2017/03/02 08:00",
+                  "to_date": "2017/03/02 11:00",
+                  "present": false
+                }
+              ]
+
+  post:
+    description: As an admin I can create an attendance record so that I can manage employee's attendance.
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+              "employee_id": {
+                "type": "integer"
+              },
+              "description": {
+                "type": "string"
+              },
+              "present": {
+                "type": "boolean"
+              },
+              "from_date": {
+                "type": "string"
+              },
+              "to_date": {
+                "type": "string"
+              },
+            "required": ["employee_id", "description", "present", "from_date", "to_date"]
+            }
+          }
+        example: |
+         {
+           "employee_id": 1,
+           "description": "sick leave",
+           "from_date": "2017/03/02 08:00",
+           "to_date": "2017/03/02 11:00",
+           "present": false
+         }
+
+    responses:
+      201:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                  "attendance_url": "string",
+                  "required": true
+
+                }
+              }
+            example: |
+              {
+                "attendance_url": "attendances/1"
+              }
+
+  /{id}:
+    get:
+      description: As an admin I can get an concrete attendance so I can see the attendance detail.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "employee_id": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "present": {
+                      "type": "boolean"
+                    },
+                    "from_date": {
+                      "type": "string"
+                    },
+                    "to_date": {
+                      "type": "string"
+                    },
+                  "required": ["employee_id","id", "name", "department_id", "gender", "role_id"]
+                  }
+                }
+              example: |
+                {
+                  "id": 1,
+                  "employee_id": "1",
+                  "name": "Jane Smith",
+                  "present": true,
+                  "from_date": "2017/03/02 08:00",
+                  "to_date": "2017/03/02 11:00"
+                }
+
+    put:
+      description: As an admin I can update an attendance information when I find this attendence has error.
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "employee_id": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "present": {
+                  "type": "boolean"
+                },
+                "from_date": {
+                  "type": "string"
+                },
+                "to_date": {
+                  "type": "string"
+                },
+              "required": ["employee_id","id", "description", "present", "from_date", "to_date"]
+              }
+            }
+          example: |
+            {
+              "id": 1,
+              "employee_id": "1",
+              "name": "Jane Smith",
+              "present": true,
+              "from_date": "2017/03/02 08:00",
+              "to_date": "2017/03/02 11:00"
+            }
+      responses:
+        204:
+    delete: 
+      description: As an admin I can delete an attendance so that I can dissolution an attendance. 
+      responses:
+        204:
+/employees:
+  get:
+    description: As an admin I can get all employee information so that I can manage them.
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "employees": {
+                  "type": "object",
+                  "properties": {
+                    "employee_url": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "department_id": {
+                      "type": "integer"
+                    },
+                    "role_id": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "integer"
+                    },
+                    "required": ["employee_url", "id", "name", "department_id", "gender", "role_id"]
+                  }
+                }
+              }
+            example: |
+              [
+                {
+                  "id": 1,
+                  "employee_url": "employees/1",
+                  "name": "Jane Smith",
+                  "department_id": 2,
+                  "role_id": 3,
+                  "gender": "male"
+                }
+              ]
+
+  post:
+    description: As an admin I can create an employee information so that the employee can be managed.
+    body:
+      application/json:
+        schema: |
+          {
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "department_id": {
+                "type": "integer"
+              },
+              "role_id": {
+                "type": "integer"
+              },
+              "gender": {
+                "type": "integer"
+              },
+              "required": ["name", "department_id", "gender", "role_id"]
+            }
+          }
+        example: |
+          {
+            "name": "Jane Smith",
+            "department_id": 2,
+            "role_id": 3,
+            "gender": "male"
+          }
+
+    responses:
+      201:
+        body:
+          application/json:
+            schema: |
+              {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                  "employee_url": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            example: |
+              {
+                "employee_uri": "employees/3"
+              }
+
+  /{id}:
+    get:
+      description: As an admin I can get an concrete employee information so I can manage his/her information.
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "type": "object",
+                  "properties": {
+                    "employee_url": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "department_id": {
+                      "type": "integer"
+                    },
+                    "role_id": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "integer"
+                    },
+                    "required": ["employee_url", "id", "name", "department_id", "gender", "role_id"]
+                  }
+                }
+              example: |
+                {
+                  "id": 1,
+                  "employee_url": "employees/1",
+                  "name": "Jane Smith",
+                  "department_id": 2,
+                  "role_id": 3,
+                  "gender": "male"
+                }
+
+    delete: 
+      description: As an admin I can delete an employee when she/he resign.
+      responses:
+        204:
+    put:
+      description: As an admin I can update an employee information when she/he change role or dempartment.
+      body:
+        application/json:
+          schema: |
+            {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "department_id": {
+                  "type": "integer"
+                },
+                "role_id": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "required": ["name", "department_id", "gender", "role_id"]
+              }
+            }
+          example: |
+            {
+              "name": "Jane Smith",
+              "department_id": 1,
+              "role_id": 2,
+              "gender": "male"
+            }
+      responses:
+        204:

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.thoughtworks.ketsu.infrastructure.mybatis.mappers.EmployeeMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="employee.id" keyColumn="id">
+        INSERT INTO employees (name, department_id, role_id, gender)
+        VALUES (#{employee.name},#{employee.department_id},#{employee.role_id},#{employee.gender});
+    </insert>
+
+    <select id="all" resultType="com.thoughtworks.ketsu.domain.employee.Employee">
+        SELECT id, name, department_id, role_id, gender from employees
+    </select>
+
+    <select id="ofId" resultMap="records.employee">
+        SELECT
+        <include refid="columns.employee"/>
+        FROM employees E
+        WHERE E.id = #{id}
+    </select>
+
+    <update id="update">
+        update employees
+        set name=#{info.name},
+        department_id=#{info.department_id},
+        role_id=#{info.role_id},
+        gender=#{info.gender}
+        where id=#{employee.id}
+    </update>
+
+    <delete id="delete">
+        delete from employees where id=#{employee.id}
+    </delete>
+</mapper>
